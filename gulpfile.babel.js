@@ -13,5 +13,5 @@ gulp.task('clean', ()=> {
 });
 
 gulp.task('run', () => {
-    childProcess.spawn(electron, ['./app'], {stdio: 'inherit'});
+    childProcess.spawn(electron, ['--debug=5858', './app'], {stdio: 'inherit'});
 });
