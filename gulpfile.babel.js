@@ -1,5 +1,7 @@
 'use strict';
 
+import karma from "karma";
+
 let childProcess = require('child_process');
 let electron = require('electron');
 let gulp = require('gulp');
@@ -14,4 +16,16 @@ gulp.task('clean', ()=> {
 
 gulp.task('run', () => {
     childProcess.spawn(electron, ['--debug=5858', './app'], {stdio: 'inherit'});
+});
+
+gulp.task("test:unit", callback => {
+    new karma.Server(
+        {
+            configFile: __dirname + '/test/unit/karma.conf.js',
+            singleRun: true
+        },
+        function(){
+            callback();
+        })
+        .start();
 });
