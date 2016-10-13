@@ -5,6 +5,7 @@ stage name: "Build"
 node {
     checkout();
     ensureDockerImage();
+    runTests();
 }
 
 /**
@@ -19,10 +20,25 @@ def cleanWorkspace() {
     sh 'rm -rf *'
 }
 
-def ensureDockerImage(){
+def ensureDockerImage() {
     String imageExists = executeCommand("docker images -q ${IMAGE_FOR_TESTS}")
-    if(!imageExists?.trim()){
+    if (!imageExists?.trim()) {
         sh "docker build -t ${IMAGE_FOR_TESTS} jenkins/docker/"
+    }
+}
+
+def runTests() {
+    def currentDir = executeCommand("pwd");
+    sh "docker run -i --rm \
+        -v ${currentDir}:/var/workspace \
+        ${IMAGE_FOR_TESTS} \
+        /bin/bash jenkins/buildOnJenkins.sh"
+
+    step([$class: "JUnitResultArchiver", testResults: "**/target/results/TEST*.xml"])
+
+    def resultcode = readFile("resultcode").trim();
+    if (resultcode != "0") {
+        currentBuild.result = 'FAILURE'
     }
 }
 
