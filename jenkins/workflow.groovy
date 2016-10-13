@@ -21,7 +21,7 @@ def cleanWorkspace() {
 }
 
 def ensureDockerImage() {
-    String imageExists = executeCommand("docker images -q ${IMAGE_FOR_TESTS}")
+    String imageExists = executeCommand("sudo docker images -q ${IMAGE_FOR_TESTS}")
     if (!imageExists?.trim()) {
         sh "docker build -t ${IMAGE_FOR_TESTS} jenkins/docker/"
     }
@@ -29,7 +29,7 @@ def ensureDockerImage() {
 
 def runTests() {
     def currentDir = executeCommand("pwd");
-    sh "docker run -i --rm \
+    sh "sudo docker run -i --rm \
         -v ${currentDir}:/var/workspace \
         ${IMAGE_FOR_TESTS} \
         /bin/bash jenkins/buildOnJenkins.sh"
