@@ -32,7 +32,7 @@ def runTests() {
     sh "sudo docker run -i --rm \
         -v ${currentDir}:/var/workspace \
         ${IMAGE_FOR_TESTS} \
-        /bin/bash jenkins/buildOnJenkins.sh"
+        /bin/bash /var/workspace/jenkins/buildOnJenkins.sh"
 
     step([$class: "JUnitResultArchiver", testResults: "**/target/results/TEST*.xml"])
 
