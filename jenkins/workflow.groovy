@@ -20,8 +20,10 @@ def cleanWorkspace() {
 }
 
 def ensureDockerImage(){
-    def imageExists = executeCommand("docker images -q ${IMAGE_FOR_TESTS}")
-    echo "Image exists: [${imageExists}]"
+    String imageExists = executeCommand("docker images -q ${IMAGE_FOR_TESTS}")
+    if(imageExists?.trim()){
+        sh "docker build -t ${IMAGE_FOR_TESTS} jenkins/docker/"
+    }
 }
 
 def executeCommand(String command) {
