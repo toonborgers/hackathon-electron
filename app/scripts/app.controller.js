@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller("MainController", function (JobsService, $rootScope, SettingsService) {
+    .controller("MainController", function (JobsService, $rootScope, SettingsService, ServerDataPopupService, $http, $interval) {
         "ngInject";
         var that = this;
         that.serverData = null;
@@ -11,11 +11,54 @@ angular.module('app')
             JobsService.getJobs()
                 .then(function (result) {
                     that.jobs = result.data.jobs;
+                    startPolling();
                 });
+        };
+
+
+        var pollAll = function () {
+            that.jobs.forEach(poll);
+        };
+
+        var poll = function (job) {
+            if (job.url) {
+                $http.get(job.url + 'api/json')
+                    .then(function (result) {
+                        if (!result.data.jobs && result.data.lastBuild) {
+                            return $http.get(job.url + 'lastBuild/api/json?depth=1')
+                        }
+                    })
+                    .then(function (result) {
+                        if (result) {
+                            if(result.data.building){
+                                job.color = 'darkgrey';
+                            }
+                            else {
+                                if(result.data.result == 'SUCCESS'){
+                                    job.color = 'blue';
+                                }
+                                else {
+                                    job.color = 'red';
+                                }
+                            }
+                        }
+                    });
+            }
+        };
+
+        var startPolling = function () {
+            if (that.intervalStop) {
+                $interval.cancel(that.intervalStop);
+            }
+            that.intervalStop = $interval(pollAll, 3000);
         };
 
         this.hasServerData = function () {
             return that.serverData != null;
+        };
+
+        this.updateServerInfo = function () {
+            ServerDataPopupService.getServerData();
         };
 
         $rootScope.$on("serverDataEntered", function () {
@@ -26,13 +69,22 @@ angular.module('app')
             getJobs();
         }
 
-        this.larger = function(job) {
-            job.height = Math.min(job.height + 1, 2);
-            job.width = Math.min(job.width + 1, 2);
-        };
+        that.MAX_HEIGHT = 3;
+        that.MAX_WIDTH = 3;
+
+        this.taller = function(job) {
+            job.height = Math.min(job.height + 1, that.MAX_HEIGHT);
+        }
 
         this.smaller = function(job) {
             job.height = Math.max(job.height - 1, 1);
+        }
+
+        this.wider = function(job) {
+            job.width = Math.min(job.width + 1, that.MAX_WIDTH);
+        };
+
+        this.thinner = function(job) {
             job.width = Math.max(job.width - 1, 1);
         };
 
@@ -66,10 +118,10 @@ angular.module('app')
                 }
             }
         };
-        
+
         this.promptBuild = function(job) {
-            JobsService.startBuild(job).then(function() {
-                JobsService.getJobs();
-            });
-        }
+            JobsService.startBuild(job);
+        };
+
+
     });

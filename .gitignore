@@ -2,3 +2,5 @@
 node_modules
 bower_components
 target/
+.DS_Store
+npm-debug.log

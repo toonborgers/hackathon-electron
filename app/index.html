@@ -9,15 +9,15 @@
     <link rel="stylesheet" href="assets/css/style.css"/>
 </head>
 <body ng-app="app" nc-cloak layout="column" ng-controller="MainController as main">
-<md-toolbar>
+<md-toolbar style="background:mediumseagreen;">
     <div class="md-toolbar-tools">
         <h2 ng-if="main.hasServerData()">{{main.serverData.url}}</h2>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="Edit">
-            <md-icon md-font-set="material-icons">face</md-icon>
+        <md-button class="md-icon-button" aria-label="Edit" ng-if="main.hasServerData()"
+                   ng-click="main.updateServerInfo()">
+            <md-icon md-font-set="material-icons">build</md-icon>
         </md-button>
     </div>
-
 </md-toolbar>
 <md-content flex layout-padding>
     <md-grid-list
@@ -31,13 +31,19 @@
                 {{job.name}}
             </div>
             <md-grid-tile-footer>
-                <md-button class="md-icon-button" aria-label="Larger" ng-click="main.larger(job)">
-                    <md-icon md-font-set="material-icons" style="color:white">fullscreen</md-icon>
+                <md-button class="md-icon-button" aria-label="Taller" ng-click="main.taller(job)" ng-if="job.height != main.MAX_HEIGHT">
+                    <md-icon md-font-set="material-icons" style="color:white">keyboard_arrow_down</md-icon>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Smaller" ng-click="main.smaller(job)">
-                    <md-icon md-font-set="material-icons" style="color:white">fullscreen_exit</md-icon>
+                <md-button class="md-icon-button" aria-label="Smaller" ng-click="main.smaller(job)" ng-if="job.height != 1">
+                    <md-icon md-font-set="material-icons" style="color:white">keyboard_arrow_up</md-icon>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Smaller" ng-click="main.promptBuild(job)">
+                <md-button class="md-icon-button" aria-label="Wider" ng-click="main.wider(job)" ng-if="job.width != main.MAX_WIDTH">
+                    <md-icon md-font-set="material-icons" style="color:white">keyboard_arrow_right</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Thinner" ng-click="main.thinner(job)" ng-if="job.width != 1">
+                    <md-icon md-font-set="material-icons" style="color:white">keyboard_arrow_left</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Refresh" ng-click="main.promptBuild(job)">
                     <md-icon md-font-set="material-icons" style="color:white">refresh</md-icon>
                 </md-button>
             </md-grid-tile-footer>

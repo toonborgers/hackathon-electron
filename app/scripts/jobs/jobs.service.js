@@ -32,8 +32,6 @@ angular.module("app.jobs")
             var user = serverData.user;
             var password = serverData.password;
 
-            console.log(user);
-            console.log(password);
             var headers = {"Authorization": "Basic " + $base64.encode(user + ":" + password)}
             url +=  "/job/" + job.name.split(" ").join("%20") + "/build";
 

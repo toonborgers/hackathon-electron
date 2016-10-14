@@ -26,12 +26,18 @@
             });
         }
 
-        function Dialogcontroller($mdDialog, SettingsService) {
+        function Dialogcontroller($mdDialog, SettingsService, $mdExpansionPanel) {
             "ngInject";
             var that = this;
 
             if (SettingsService.hasServerData()) {
                 this.serverData = SettingsService.getServerData();
+                if (this.serverData.password || this.serverData.user) {
+                    $mdExpansionPanel().waitFor('credentialsPanel')
+                        .then(function (instance) {
+                            instance.expand({animation: false});
+                        });
+                }
             } else {
                 this.serverData = {
                     url: '',
@@ -42,7 +48,9 @@
 
             this.submit = function () {
                 $mdDialog.hide(that.serverData);
-            }
+            };
+
+
         }
     }
 })();
