@@ -1,0 +1,47 @@
+<md-dialog class="setupdialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Server data</h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form name="setupForm">
+                <md-input-container class="md-block">
+                    <label>Url</label>
+                    <input name="url" ng-model="dialog.serverData.url" required
+                           ng-pattern="/^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/">
+                    <div ng-messages="setupForm.url.$error" role="alert">
+                        <div ng-message="required">Url is required.</div>
+                        <div ng-message="pattern">That ain't no url!</div>
+                    </div>
+                </md-input-container>
+                <md-expansion-panel>
+                    <md-expansion-panel-collapsed>
+                        <div class="md-title">Credentials</div>
+                    </md-expansion-panel-collapsed>
+
+                    <md-expansion-panel-expanded>
+                        <md-expansion-panel-header ng-click="$panel.collapse()">
+                            <div class="md-title">Credentials</div>
+                        </md-expansion-panel-header>
+                        <md-expansion-panel-content>
+                            <md-input-container class="md-block">
+                                <label>User</label>
+                                <input ng-model="dialog.serverData.user">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Password</label>
+                                <input ng-model="dialog.serverData.password" type="password">
+                            </md-input-container>
+                        </md-expansion-panel-content>
+                    </md-expansion-panel-expanded>
+                </md-expansion-panel>
+            </form>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-raised md-primary" ng-disabled="setupForm.$invalid" ng-click="dialog.submit()">Submit
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

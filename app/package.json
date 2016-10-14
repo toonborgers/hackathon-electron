@@ -4,5 +4,6 @@
   "description": "Electron app for the Cegeka Hackathon",
   "main": "main.js",
   "dependencies": {
+
   }
 }
