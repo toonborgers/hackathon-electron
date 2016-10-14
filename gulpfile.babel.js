@@ -27,7 +27,8 @@ const files = {
     html: `${appDir}/**/*.html`,
     assets: `${appDir}/assets/**/*`,
     electronMain: `${appDir}/main.js`,
-    electronPackage: `${appDir}/package.json`
+    electronPackage: `${appDir}/package.json`,
+    iconfontFiles: 'bower_components/material-design-icons/iconfont/*.+(css|eot|woff2|woff|ttf)'
 };
 
 gulp.task('clean', ()=> {
@@ -108,7 +109,7 @@ gulp.task('build:app:assets', () =>
         .pipe(gulp.dest(`${distDir}/assets`))
 );
 
-gulp.task('build:vendor:bower', ['build:vendor:bower:js', 'build:vendor:bower:css']);
+gulp.task('build:vendor:bower', ['build:vendor:bower:js', 'build:vendor:bower:iconfont', 'build:vendor:bower:css']);
 
 gulp.task('build:vendor:bower:js', ()=> {
     return gulp
@@ -135,6 +136,11 @@ gulp.task('build:vendor:bower:css', ()=> {
         }))
         .pipe(concatCss('vendor.css'))
         .pipe(gulp.dest(vendorDir + '/css'));
+});
+
+gulp.task('build:vendor:bower:iconfont', ()=> {
+    return gulp.src(files.iconfontFiles)
+        .pipe(gulp.dest(vendorDir + '/css/iconfont'))
 });
 
 gulp.task('test:unit', callback => {

@@ -5,9 +5,20 @@
     <title>Hackathon</title>
 
     <link rel="stylesheet" href="vendor/css/vendor.css"/>
+    <link rel="stylesheet" href="vendor/css/iconfont/material-icons.css"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
 </head>
 <body ng-app="app" nc-cloak layout="column" ng-controller="MainController as main">
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h2 ng-if="main.hasServerData()">{{main.serverData.url}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Edit">
+            <md-icon md-font-set="material-icons">face</md-icon>
+        </md-button>
+    </div>
+
+</md-toolbar>
 <md-content flex layout-padding>
     <ul>
         <li ng-repeat="job in main.jobs">{{job.name}}</li>
@@ -17,7 +28,5 @@
 <script src="vendor/vendor.min.js"></script>
 
 <script src="scripts/app.min.js"></script>
-<script>
-</script>
 </body>
 </html>
