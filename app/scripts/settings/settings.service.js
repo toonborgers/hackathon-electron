@@ -2,7 +2,7 @@
     var electronSettings = require('electron-settings');
 
     angular.module("app.settings")
-        .service("SettginsService", SettingsService);
+        .service("SettingsService", SettingsService);
 
     function SettingsService() {
         return {
