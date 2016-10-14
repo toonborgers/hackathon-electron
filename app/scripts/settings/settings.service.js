@@ -5,6 +5,7 @@
         .service("SettingsService", SettingsService);
 
     function SettingsService() {
+        console.log("Settings file location: " + electronSettings.getSettingsFilePath());
         var key_serverData = "serverData";
         return {
             hasServerData: hasServerData,

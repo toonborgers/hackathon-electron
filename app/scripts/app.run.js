@@ -2,17 +2,24 @@
     angular.module('app')
         .run(function ($mdDialog, $rootScope, SettingsService) {
             "ngInject";
-            $mdDialog.show({
-                templateUrl: 'scripts/template.setupdialog.html',
-                parent: angular.element(document.body),
-                controller: Dialogcontroller,
-                controllerAs: 'dialog',
-                escapeToClose: 'false'
-            }).then(function (result) {
-                SettingsService.storeServerData(result);
-                $rootScope.$broadcast("serverDataEntered");
-            });
+            if (!SettingsService.hasServerData()) {
+                showDialog($mdDialog)
+                    .then(function (result) {
+                        SettingsService.storeServerData(result);
+                        $rootScope.$broadcast("serverDataEntered");
+                    });
+            }
         });
+
+    function showDialog($mdDialog) {
+        return $mdDialog.show({
+            templateUrl: 'scripts/template.setupdialog.html',
+            parent: angular.element(document.body),
+            controller: Dialogcontroller,
+            controllerAs: 'dialog',
+            escapeToClose: 'false'
+        });
+    }
 
     function Dialogcontroller($mdDialog) {
         "ngInject";
