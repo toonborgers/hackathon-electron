@@ -26,14 +26,19 @@
             });
         }
 
-        function Dialogcontroller($mdDialog) {
+        function Dialogcontroller($mdDialog, SettingsService) {
             "ngInject";
             var that = this;
-            this.serverData = {
-                url: '',
-                user: '',
-                password: ''
-            };
+
+            if (SettingsService.hasServerData()) {
+                this.serverData = SettingsService.getServerData();
+            } else {
+                this.serverData = {
+                    url: '',
+                    user: '',
+                    password: ''
+                };
+            }
 
             this.submit = function () {
                 $mdDialog.hide(that.serverData);
