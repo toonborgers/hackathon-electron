@@ -1,6 +1,6 @@
 (function () {
     angular.module('app')
-        .run(function ($mdDialog, $rootScope) {
+        .run(function ($mdDialog, $rootScope, SettingsService) {
             "ngInject";
             $mdDialog.show({
                 templateUrl: 'scripts/template.setupdialog.html',
@@ -9,7 +9,7 @@
                 controllerAs: 'dialog',
                 escapeToClose: 'false'
             }).then(function (result) {
-                console.log(JSON.stringify(result));
+                SettingsService.storeServerData(result);
                 $rootScope.$broadcast("serverDataEntered");
             });
         });
