@@ -1,6 +1,7 @@
 (function () {
     angular.module('app')
-        .run(function ($mdDialog) {
+        .run(function ($mdDialog, $rootScope) {
+            "ngInject";
             $mdDialog.show({
                 templateUrl: 'scripts/template.setupdialog.html',
                 parent: angular.element(document.body),
@@ -9,6 +10,7 @@
                 escapeToClose: 'false'
             }).then(function (result) {
                 console.log(JSON.stringify(result));
+                $rootScope.$broadcast("serverDataEntered");
             });
         });
 
