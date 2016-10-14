@@ -1,1 +1,1 @@
-angular.module('app.settings', []);
+angular.module('app.settings', ['material.components.expansionPanels', 'ngMessages']);
